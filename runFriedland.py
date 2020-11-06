@@ -29,7 +29,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser( description = 'Run SNOwGLoBES on Alex Friedland supernova neutrino fluxes and plot them' )
     parser.add_argument( '-s', dest = 'sDir', type = str, help = 'the location of SNOwGLoBES' )
     parser.add_argument( '-o', dest = 'oDir', type = str, help = 'the directory of the output plots' )
-    parser.add_argument( '-c', dest = 'dConfig', type = str, help = 'the detector resolution/smearing, default = ar40kt_DCR_THR35QENonRefl2PE', default = 'ar40kt_DCR_THR35QENonRefl2PE' )
+    parser.add_argument( '-c', dest = 'dConfig', type = str, help = 'the detector resolution/smearing, default = %(default)s', default = 'ar40kt_DCR_THR35QENonRefl2PE' )
+    parser.add_argument( '-r', dest = 'runSNOwGLoBES', action = 'store_true', help = 'run SNOwGLoBES?  default = False' )
 
     args = parser.parse_args()
 
@@ -43,9 +44,10 @@ if __name__ == "__main__":
         fluxes.append( file )
 
     # Run SNOwGLoBES
-    for flux in fluxes:
-        cmd = './supernova.pl ' + flux + ' argon_marley1_ar ' + args.dConfig
-        # os.system( cmd )
+    if args.runSNOwGLoBES:
+        for flux in fluxes:
+            cmd = './supernova.pl ' + flux + ' argon_marley1_ar ' + args.dConfig
+            os.system( cmd )
 
     if not os.path.exists( args.oDir ):
         os.mkdir( args.oDir )
