@@ -6,14 +6,16 @@ import argparse
 import numpy as np
 import matplotlib.pyplot as plt
 
-def makePlot( flux, arrivedFile, detectedFile, oDir ):
+def makePlot( flux, arrivedFile, detectedArFile, detectedeFile, oDir ):
     arrived = np.genfromtxt( arrivedFile )
-    detected = np.genfromtxt( detectedFile, skip_footer=2 )
+    detectedAr = np.genfromtxt( detectedArFile, skip_footer=2 )
+    detectede = np.genfromtxt( detectedeFile, skip_footer=2 )
     plt.rc( 'xtick', labelsize = 20 )
     plt.rc( 'ytick', labelsize = 20 )
     plt.ylim( 0, 450 )
     plt.plot( arrived[:,0], arrived[:,1]/1.e7, linewidth = 2, label = r'Arrived/$10^7$' )
-    plt.plot( detected[:,0], detected[:,1], linewidth = 2, label = 'Detected' )
+    plt.plot( detectedAr[:,0], detectedAr[:,1], linewidth = 2, label = 'Detected via Ar' )
+    plt.plot( detectede[:,0], detectede[:,1]*10., linewidth = 2, label = r'Detected via e$^{-}{\times}10$' )
     plt.xlabel( 'Energy [GeV]', fontsize = 20 )
     plt.ylabel( 'Event Rate', fontsize = 20 )
     plt.legend()
@@ -55,5 +57,6 @@ if __name__ == "__main__":
     # Make flux plots
     for flux in fluxes:
         infile = args.sDir + '/fluxes/' + flux + '.dat'
-        outfile = args.sDir + '/out/' + flux + '_nue_Ar40_marley1_' + args.dConfig + '_events_smeared.dat'
-        makePlot( flux, infile, outfile, args.oDir )
+        outArfile = args.sDir + '/out/' + flux + '_nue_Ar40_marley1_' + args.dConfig + '_events_smeared.dat'
+        outefile = args.sDir + '/out/' + flux + '_nue_e_' + args.dConfig + '_events_smeared.dat'
+        makePlot( flux, infile, outArfile, outefile, args.oDir )
