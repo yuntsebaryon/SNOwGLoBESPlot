@@ -12,6 +12,7 @@ def makePlot( flux, arrivedFile, detectedArFile, detectedeFile, oDir ):
     detectede = np.genfromtxt( detectedeFile, skip_footer=2 )
     plt.rc( 'xtick', labelsize = 20 )
     plt.rc( 'ytick', labelsize = 20 )
+    plt.xlim( 0, 0.1 )
     plt.ylim( 0, 450 )
     plt.plot( arrived[:,0], arrived[:,1]/1.e7, linewidth = 2, label = r'Arrived/$10^7$' )
     plt.plot( detectedAr[:,0], detectedAr[:,1], linewidth = 2, label = 'Detected via Ar' )
@@ -20,6 +21,7 @@ def makePlot( flux, arrivedFile, detectedArFile, detectedeFile, oDir ):
     plt.ylabel( 'Event Rate', fontsize = 20 )
     plt.legend()
     plt.tight_layout()
+    if flux.endswith( '_normalized' ): flux = flux[:-len('_normalized')]
     outfile = oDir + '/' + flux + '.pdf'
     plt.savefig( outfile )
     plt.close()
